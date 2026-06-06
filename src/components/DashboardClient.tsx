@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { format, getMonth, getYear } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { Transaction, CATEGORY_COLORS } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -62,8 +61,8 @@ export default function DashboardClient({ transactions }: DashboardClientProps) 
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
-          <p className="text-slate-500 text-sm mt-1">Visão geral das suas finanças</p>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Dashboard</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Visão geral das suas finanças</p>
         </div>
         <div className="flex gap-2">
           <Select value={selectedMonth} onValueChange={v => v && setSelectedMonth(v)}>
@@ -91,28 +90,28 @@ export default function DashboardClient({ transactions }: DashboardClientProps) 
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-slate-900 dark:border dark:border-slate-800">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-500">Receitas</p>
-                <p className="text-2xl font-bold text-emerald-600 mt-1">{formatCurrency(totalReceitas)}</p>
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Receitas</p>
+                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{formatCurrency(totalReceitas)}</p>
               </div>
-              <div className="bg-emerald-100 rounded-full p-3">
-                <TrendingUp className="w-6 h-6 text-emerald-600" />
+              <div className="bg-emerald-100 dark:bg-emerald-950 rounded-full p-3">
+                <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-slate-900 dark:border dark:border-slate-800">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-500">Despesas</p>
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Despesas</p>
                 <p className="text-2xl font-bold text-red-500 mt-1">{formatCurrency(totalDespesas)}</p>
               </div>
-              <div className="bg-red-100 rounded-full p-3">
+              <div className="bg-red-100 dark:bg-red-950 rounded-full p-3">
                 <TrendingDown className="w-6 h-6 text-red-500" />
               </div>
             </div>
@@ -136,13 +135,13 @@ export default function DashboardClient({ transactions }: DashboardClientProps) 
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pie Chart */}
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-slate-900 dark:border dark:border-slate-800">
           <CardHeader>
-            <CardTitle className="text-base font-semibold text-slate-700">Despesas por Categoria</CardTitle>
+            <CardTitle className="text-base font-semibold text-slate-700 dark:text-slate-200">Despesas por Categoria</CardTitle>
           </CardHeader>
           <CardContent>
             {categoryData.length === 0 ? (
-              <div className="flex items-center justify-center h-64 text-slate-400 text-sm">
+              <div className="flex items-center justify-center h-64 text-slate-400 dark:text-slate-500 text-sm">
                 Nenhuma despesa no período
               </div>
             ) : (
@@ -173,26 +172,26 @@ export default function DashboardClient({ transactions }: DashboardClientProps) 
         </Card>
 
         {/* Recent Transactions */}
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-slate-900 dark:border dark:border-slate-800">
           <CardHeader>
-            <CardTitle className="text-base font-semibold text-slate-700">Transações Recentes</CardTitle>
+            <CardTitle className="text-base font-semibold text-slate-700 dark:text-slate-200">Transações Recentes</CardTitle>
           </CardHeader>
           <CardContent>
             {recentTransactions.length === 0 ? (
-              <div className="flex items-center justify-center h-64 text-slate-400 text-sm">
+              <div className="flex items-center justify-center h-64 text-slate-400 dark:text-slate-500 text-sm">
                 Nenhuma transação registrada
               </div>
             ) : (
               <div className="space-y-3">
                 {recentTransactions.map(t => (
-                  <div key={t.id} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                  <div key={t.id} className="flex items-center justify-between py-2 border-b border-slate-50 dark:border-slate-800 last:border-0">
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium text-slate-700 truncate max-w-[200px]">{t.description}</span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[200px]">{t.description}</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500">
                         {t.category} · {format(new Date(t.date + 'T00:00:00'), 'dd/MM/yyyy')}
                       </span>
                     </div>
-                    <span className={`text-sm font-semibold ${t.type === 'receita' ? 'text-emerald-600' : 'text-red-500'}`}>
+                    <span className={`text-sm font-semibold ${t.type === 'receita' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
                       {t.type === 'receita' ? '+' : '-'}{formatCurrency(t.amount)}
                     </span>
                   </div>

@@ -61,7 +61,6 @@ export default function TransactionsClient({ initialTransactions }: Transactions
 
   const handleSuccess = useCallback(() => {
     router.refresh()
-    // Optimistic: reload from server
     const supabase = createClient()
     supabase.from('transactions').select('*').order('date', { ascending: false }).then(({ data }) => {
       if (data) setTransactions(data)
@@ -85,7 +84,6 @@ export default function TransactionsClient({ initialTransactions }: Transactions
       t.category,
       t.amount.toFixed(2).replace('.', ','),
     ])
-
     const csv = [headers, ...rows].map(r => r.join(';')).join('\n')
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
@@ -103,11 +101,11 @@ export default function TransactionsClient({ initialTransactions }: Transactions
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Transações</h1>
-          <p className="text-slate-500 text-sm mt-1">{filtered.length} transação(ões) encontrada(s)</p>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Transações</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{filtered.length} transação(ões) encontrada(s)</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={exportCSV} className="gap-2">
+          <Button variant="outline" onClick={exportCSV} className="gap-2 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Exportar CSV</span>
           </Button>
@@ -123,12 +121,12 @@ export default function TransactionsClient({ initialTransactions }: Transactions
 
       {/* Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
-          <p className="text-xs text-slate-500 font-medium">Receitas</p>
-          <p className="text-lg font-bold text-emerald-600 mt-1">{formatCurrency(totalReceitas)}</p>
+        <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Receitas</p>
+          <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-1">{formatCurrency(totalReceitas)}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
-          <p className="text-xs text-slate-500 font-medium">Despesas</p>
+        <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Despesas</p>
           <p className="text-lg font-bold text-red-500 mt-1">{formatCurrency(totalDespesas)}</p>
         </div>
         <div className={`col-span-2 sm:col-span-1 rounded-xl p-4 shadow-sm ${totalReceitas - totalDespesas >= 0 ? 'bg-blue-600' : 'bg-orange-500'}`}>
@@ -138,7 +136,7 @@ export default function TransactionsClient({ initialTransactions }: Transactions
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <div className="relative lg:col-span-2">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -179,7 +177,7 @@ export default function TransactionsClient({ initialTransactions }: Transactions
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 filterType === t
                   ? 'bg-blue-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {t === 'all' ? 'Todos' : t === 'receita' ? 'Receitas' : 'Despesas'}
@@ -189,40 +187,40 @@ export default function TransactionsClient({ initialTransactions }: Transactions
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-slate-50">
-                <TableHead className="font-semibold text-slate-600">Data</TableHead>
-                <TableHead className="font-semibold text-slate-600">Descrição</TableHead>
-                <TableHead className="font-semibold text-slate-600 hidden sm:table-cell">Categoria</TableHead>
-                <TableHead className="font-semibold text-slate-600 hidden md:table-cell">Tipo</TableHead>
-                <TableHead className="font-semibold text-slate-600 text-right">Valor</TableHead>
-                <TableHead className="font-semibold text-slate-600 text-right">Ações</TableHead>
+              <TableRow className="bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <TableHead className="font-semibold text-slate-600 dark:text-slate-300">Data</TableHead>
+                <TableHead className="font-semibold text-slate-600 dark:text-slate-300">Descrição</TableHead>
+                <TableHead className="font-semibold text-slate-600 dark:text-slate-300 hidden sm:table-cell">Categoria</TableHead>
+                <TableHead className="font-semibold text-slate-600 dark:text-slate-300 hidden md:table-cell">Tipo</TableHead>
+                <TableHead className="font-semibold text-slate-600 dark:text-slate-300 text-right">Valor</TableHead>
+                <TableHead className="font-semibold text-slate-600 dark:text-slate-300 text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-slate-400 py-12">
+                  <TableCell colSpan={6} className="text-center text-slate-400 dark:text-slate-500 py-12">
                     Nenhuma transação encontrada
                   </TableCell>
                 </TableRow>
               ) : (
                 filtered.map(t => (
-                  <TableRow key={t.id} className="hover:bg-slate-50 transition-colors">
-                    <TableCell className="text-slate-600 text-sm whitespace-nowrap">
+                  <TableRow key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <TableCell className="text-slate-600 dark:text-slate-400 text-sm whitespace-nowrap">
                       {format(new Date(t.date + 'T00:00:00'), 'dd/MM/yyyy')}
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm font-medium text-slate-800">{t.description}</span>
-                      <span className="text-xs text-slate-400 sm:hidden block">{t.category}</span>
+                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{t.description}</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500 sm:hidden block">{t.category}</span>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       <Badge
                         variant="secondary"
-                        style={{ backgroundColor: CATEGORY_COLORS[t.category as keyof typeof CATEGORY_COLORS] + '20', color: CATEGORY_COLORS[t.category as keyof typeof CATEGORY_COLORS] }}
+                        style={{ backgroundColor: CATEGORY_COLORS[t.category as keyof typeof CATEGORY_COLORS] + '25', color: CATEGORY_COLORS[t.category as keyof typeof CATEGORY_COLORS] }}
                         className="text-xs font-medium border-0"
                       >
                         {t.category}
@@ -231,13 +229,13 @@ export default function TransactionsClient({ initialTransactions }: Transactions
                     <TableCell className="hidden md:table-cell">
                       <Badge
                         variant={t.type === 'receita' ? 'default' : 'secondary'}
-                        className={`text-xs ${t.type === 'receita' ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100' : 'bg-red-100 text-red-600 hover:bg-red-100'}`}
+                        className={`text-xs ${t.type === 'receita' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100' : 'bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 hover:bg-red-100'}`}
                       >
                         {t.type === 'receita' ? 'Receita' : 'Despesa'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className={`text-sm font-semibold ${t.type === 'receita' ? 'text-emerald-600' : 'text-red-500'}`}>
+                      <span className={`text-sm font-semibold ${t.type === 'receita' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
                         {t.type === 'receita' ? '+' : '-'}{formatCurrency(t.amount)}
                       </span>
                     </TableCell>
@@ -245,13 +243,13 @@ export default function TransactionsClient({ initialTransactions }: Transactions
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => { setEditingTransaction(t); setFormOpen(true) }}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setDeletingId(t.id)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

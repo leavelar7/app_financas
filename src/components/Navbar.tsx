@@ -4,6 +4,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { TrendingUp, LayoutDashboard, List, LogOut, Menu, X } from 'lucide-react'
 import { User } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -30,7 +31,7 @@ export default function Navbar({ user }: NavbarProps) {
   ]
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
@@ -38,7 +39,7 @@ export default function Navbar({ user }: NavbarProps) {
               <div className="bg-blue-600 rounded-lg p-1.5">
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-slate-800 hidden sm:block">FinançasPro</span>
+              <span className="text-lg font-bold text-slate-800 dark:text-white hidden sm:block">FinançasPro</span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-1">
@@ -48,8 +49,8 @@ export default function Navbar({ user }: NavbarProps) {
                   href={href}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     pathname === href
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -59,16 +60,22 @@ export default function Navbar({ user }: NavbarProps) {
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:block text-sm text-slate-500 truncate max-w-[180px]">
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:block text-sm text-slate-400 dark:text-slate-500 truncate max-w-[160px]">
               {user.email}
             </span>
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="hidden md:flex gap-2 text-slate-600">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="hidden md:flex gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            >
               <LogOut className="w-4 h-4" />
               Sair
             </Button>
             <button
-              className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100"
+              className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -77,7 +84,7 @@ export default function Navbar({ user }: NavbarProps) {
         </div>
 
         {mobileOpen && (
-          <div className="md:hidden border-t border-slate-100 py-3 space-y-1">
+          <div className="md:hidden border-t border-slate-100 dark:border-slate-800 py-3 space-y-1">
             {navLinks.map(({ href, label, icon: Icon }) => (
               <Link
                 key={href}
@@ -85,8 +92,8 @@ export default function Navbar({ user }: NavbarProps) {
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   pathname === href
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -95,7 +102,7 @@ export default function Navbar({ user }: NavbarProps) {
             ))}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 w-full"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 w-full"
             >
               <LogOut className="w-4 h-4" />
               Sair
